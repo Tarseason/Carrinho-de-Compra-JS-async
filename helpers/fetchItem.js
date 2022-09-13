@@ -1,6 +1,7 @@
 const fetchItem = async (consult) => {
   if (!consult) return new Error('You must provide an url');
-  const url = await fetch(`https://api.mercadolibre.com/items/${consult}`);
+  const url = await (await fetch(`https://api.mercadolibre.com/items/${consult}`)).json();
+  
   return url;
 };
 
