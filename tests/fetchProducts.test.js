@@ -8,7 +8,7 @@ describe('1 - Teste a função fetchProducts', () => {
   });
   it('Teste se a função é chamada', async () => {
     await fetchProducts('computador')
-    expect(fetch).toHaveBeenCalledWith('https://api.mercadolibre.com/sites/MLB/search?q=computador')
+    expect(fetch).toHaveBeenCalledWith(`https://api.mercadolibre.com/sites/MLB/search?q=${consulta}`)
   });
   it('Testa se retorna erro quando falha conexao', async () => {
     const armazena = await fetchProducts()
