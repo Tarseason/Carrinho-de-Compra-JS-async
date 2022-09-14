@@ -9,6 +9,9 @@
  * @param {string} imageSource - URL da imagem.
  * @returns {Element} Elemento de imagem do produto.
  */
+
+const producti = document.getElementsByClassName('cart__items')[0];
+
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -39,12 +42,13 @@ const createCustomElement = (element, className, innerText) => {
  * @returns {Element} Elemento de produto.
  */
 
- const createCartItemElement = ({ id, title, price }) => {
+const createCartItemElement = ({ id, title, price }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
   li.addEventListener('click', cartItemClickListener = () => {
     li.remove();
+    saveCartItems(producti.innerHTML);
   });
   return li;
 };
@@ -57,11 +61,12 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   section.appendChild(createCustomElement('span', 'item__title', title));
   section.appendChild(createProductImageElement(thumbnail));
   const buttonPurchase = createCustomElement('button', 'item__add', 'Adicionar ao carrinho!');
+
   buttonPurchase.addEventListener('click', () => {
     const productId = section.querySelector('.item_id').innerText;
-    const product = document.getElementsByClassName('cart__items')[0];
     fetchItem(productId).then((elemento) => {
-      product.appendChild(createCartItemElement(elemento));
+      producti.appendChild(createCartItemElement(elemento));
+      saveCartItems(producti.innerHTML);
     });
   });
 
@@ -98,9 +103,27 @@ const getIdFromProductItem = (product) => product.querySelector('span.item.id').
 
 // A partir de agora vai começar a ...
 
-// const a = document.getElementsByClassName('cart__items') <= isso pega a section que fica o carrinho de compra.
-// const c = document.getElementsByClassName('item') <= isso pega o produto. 
-// criar uma função que quando clicado no c[?] o a recebe seu id, sua descrição sua imagem. 
-window.onload = () => {
-  captura();
- };
+// const limpaMesmo = () => {
+//   localStorage.clear();
+// };
+
+// const clearButton = document.getElementsByClassName('empty-cart');
+// clearButton.addEventListener('click', limpaMesmo);
+
+const recoveryEvent = () => {
+  const listCart = document.querySelectorAll('.cart__item');
+  listCart.forEach((elemento) => {
+    elemento.addEventListener('click', () => {
+      elemento.remove();
+      saveCartItems(producti.innerHTML);
+    });
+  });
+};
+
+window.onload = async () => {
+  await captura();
+  if (localStorage.getItem('getItem')) {
+    producti.innerHTML = localStorage.getItem('getItem');
+  }
+  recoveryEvent();
+};
