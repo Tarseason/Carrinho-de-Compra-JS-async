@@ -103,12 +103,16 @@ const getIdFromProductItem = (product) => product.querySelector('span.item.id').
 
 // A partir de agora vai começar a ...
 
-// const limpaMesmo = () => {
-//   localStorage.clear();
-// };
+const clearButton = document.getElementsByClassName('empty-cart')[0];
+clearButton.addEventListener('click', () => {
+  producti.innerHTML = '';
+  localStorage.clear();
+});
 
-// const clearButton = document.getElementsByClassName('empty-cart');
-// clearButton.addEventListener('click', limpaMesmo);
+// Referencia Local Storage
+/*
+https://josiaspereira.com.br/como-usar-localstorage-no-reactjs/#:~:text=Para%20salvar%20alguma%20informa%C3%A7%C3%A3o%20no,uma%20chave%20e%20um%20valor.
+*/
 
 const recoveryEvent = () => {
   const listCart = document.querySelectorAll('.cart__item');
