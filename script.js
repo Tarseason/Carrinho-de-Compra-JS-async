@@ -89,7 +89,9 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
 };
 
 const captura = async () => {
+  const carrega = document.querySelector('.loading');
   const { results } = await fetchProducts('computador');
+  carrega.remove();
   const showI = document.querySelector('.items');
 
   results.forEach((elem) => {
