@@ -12,6 +12,18 @@
 
 const producti = document.getElementsByClassName('cart__items')[0];
 
+const somaTot = async () => {
+  const priceItems = document.querySelectorAll('.cart__item');
+  const botao = document.querySelector('.total-price');
+  let somaMesmo = 0;
+
+  priceItems.forEach((elemento) => {
+    const somaMESMO = Number(elemento.innerText.split('$')[1]);
+    somaMesmo += somaMESMO;
+  });
+  botao.innerText = `Subtotal: R$${Math.round(somaMesmo * 100) / 100}`;
+};
+
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -48,6 +60,7 @@ const createCartItemElement = ({ id, title, price }) => {
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
   li.addEventListener('click', cartItemClickListener = () => {
     li.remove();
+    somaTot();
     saveCartItems(producti.innerHTML);
   });
   return li;
@@ -66,6 +79,7 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
     const productId = section.querySelector('.item_id').innerText;
     fetchItem(productId).then((elemento) => {
       producti.appendChild(createCartItemElement(elemento));
+      somaTot();
       saveCartItems(producti.innerHTML);
     });
   });
@@ -90,7 +104,7 @@ const captura = async () => {
  * @returns {string} ID do produto.
  */
 
-const getIdFromProductItem = (product) => product.querySelector('span.item.id').innerText;
+// const getIdFromProductItem = (product) => product.querySelector('span.item.id').innerText;
 
 /**
  * Função responsável por criar e retornar um item do carrinho.
@@ -106,6 +120,7 @@ const getIdFromProductItem = (product) => product.querySelector('span.item.id').
 const clearButton = document.getElementsByClassName('empty-cart')[0];
 clearButton.addEventListener('click', () => {
   producti.innerHTML = '';
+  somaTot();
   localStorage.clear();
 });
 
@@ -119,6 +134,7 @@ const recoveryEvent = () => {
   listCart.forEach((elemento) => {
     elemento.addEventListener('click', () => {
       elemento.remove();
+      somaTot();
       saveCartItems(producti.innerHTML);
     });
   });
@@ -130,4 +146,5 @@ window.onload = async () => {
     producti.innerHTML = localStorage.getItem('getItem');
   }
   recoveryEvent();
+  somaTot();
 };
